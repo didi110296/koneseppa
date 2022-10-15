@@ -1,11 +1,9 @@
 import { useIntersection } from "@lib/hooks/use-in-view"
 import { Product } from "@medusajs/medusa"
-import ProductTabs from "@modules/designer/components/product-tabs"
 import React, { useRef, useState } from "react"
 import { ProductPreviewType } from "types/global"
 import ComponentSelect from "../components/component-select"
 import ComponentMultiSelect from "../components/component-select-multiple"
-import ImageGallery from "../components/image-gallary"
 import Overview from "../components/overview"
 
 export type DesignerItem = (ProductPreviewType & {
