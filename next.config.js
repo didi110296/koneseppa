@@ -10,6 +10,7 @@ module.exports = withStoreConfig({
       "localhost",
       "images.jimms.fi",
     ],
+    unoptimized: true,
   },
 })
 
