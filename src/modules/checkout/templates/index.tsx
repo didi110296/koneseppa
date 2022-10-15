@@ -1,6 +1,5 @@
 import { CheckoutProvider } from "@lib/context/checkout-context"
 import ChevronDown from "@modules/common/icons/chevron-down"
-import MedusaCTA from "@modules/layout/components/medusa-cta"
 import Link from "next/link"
 import CheckoutLoader from "../components/checkout-loader"
 import CheckoutForm from "./checkout-form"
@@ -22,7 +21,7 @@ const CheckoutTemplate = () => {
               </a>
             </Link>
             <Link href="/">
-              <a className="text-xl-semi">ACME</a>
+              <a className="text-xl-semi">Koneseppä</a>
             </Link>
             <div className="flex-1 basis-0" />
           </nav>
@@ -35,7 +34,7 @@ const CheckoutTemplate = () => {
           </div>
         </div>
         <div className="py-4 w-full flex items-center justify-center">
-          <MedusaCTA />
+          Maksut käsittelee kolmas osapuoli. Maksutiedot käsitellään salatun HTTPS-yhteyden yli.
         </div>
       </div>
     </CheckoutProvider>

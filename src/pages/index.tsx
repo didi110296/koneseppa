@@ -19,7 +19,7 @@ const Home: NextPageWithLayout = () => {
 }
 
 Home.getLayout = (page: ReactElement) => {
-  return <Layout>{page}</Layout>
+  return <Layout dark={false}>{page}</Layout>
 }
 
 export default Home

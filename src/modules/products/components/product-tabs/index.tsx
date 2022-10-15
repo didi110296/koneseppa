@@ -105,10 +105,10 @@ const ShippingInfoTab = () => {
         <div className="flex items-start gap-x-2">
           <FastDelivery />
           <div>
-            <span className="font-semibold">Fast delivery</span>
+            <span className="font-semibold">Nopea kuljetus</span>
             <p className="max-w-sm">
-              Your package will arrive in 3-5 business days at your pick up
-              location or in the comfort of your home.
+              Yleensä toimitamme tietokoneet pelivalmiina 5-7 työpäivän aikana.
+              Toimitusaikaan vaikuttaa myös tietokoneen osien saatavuus komponenttipulan takia.
             </p>
           </div>
         </div>

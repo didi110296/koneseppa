@@ -14,7 +14,7 @@ const Cart: NextPageWithLayout = () => {
 }
 
 Cart.getLayout = (page: ReactElement) => {
-  return <Layout>{page}</Layout>
+  return <Layout dark={false}>{page}</Layout>
 }
 
 export default Cart

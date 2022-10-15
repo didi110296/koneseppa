@@ -15,7 +15,7 @@ const Orders: NextPageWithLayout = () => {
 
 Orders.getLayout = (page) => {
   return (
-    <Layout>
+    <Layout dark={false}>
       <AccountLayout>{page}</AccountLayout>
     </Layout>
   )

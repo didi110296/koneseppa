@@ -20,6 +20,6 @@ const Store: NextPageWithLayout = () => {
   )
 }
 
-Store.getLayout = (page) => <Layout>{page}</Layout>
+Store.getLayout = (page) => <Layout dark={false}>{page}</Layout>
 
 export default Store

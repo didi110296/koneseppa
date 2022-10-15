@@ -13,7 +13,7 @@ const Login: NextPageWithLayout = () => {
 }
 
 Login.getLayout = (page) => {
-  return <Layout>{page}</Layout>
+  return <Layout dark={false}>{page}</Layout>
 }
 
 export default Login

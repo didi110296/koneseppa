@@ -27,7 +27,7 @@ function App({
             <CartProvider>
               <StoreProvider>
                 <AccountProvider>
-                  {getLayout(<Component {...pageProps} />)}
+                    {getLayout(<Component {...pageProps} />)}
                 </AccountProvider>
               </StoreProvider>
             </CartProvider>

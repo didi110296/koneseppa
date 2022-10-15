@@ -9,6 +9,8 @@ import { CalculatedVariant } from "types/medusa"
 type LayoutCollection = {
   id: string
   title: string
+  metadata: Record<string, unknown>
+  handle: string
 }
 
 const fetchCollectionData = async (): Promise<LayoutCollection[]> => {
@@ -32,6 +34,8 @@ const fetchCollectionData = async (): Promise<LayoutCollection[]> => {
   return collections.map((c) => ({
     id: c.id,
     title: c.title,
+    metadata: c.metadata,
+    handle: c.handle
   }))
 }
 
@@ -91,6 +95,98 @@ const fetchFeaturedProducts = async (
       },
     }
   })
+}
+
+export const fetchProductsDesigner = async (
+  category: string,
+  cart_id: string | undefined,
+  region: Region
+): Promise<(ProductPreviewType & { calculated_price: number; product: Product } )[]> => {
+  const collections = await fetchCollectionData();
+  const collection = collections.find(i => i.metadata.designer === category);
+  const products = await medusaClient.products
+    .list({
+      is_giftcard: false,
+      collection_id: collection ? [collection.id] : ['null'],
+      cart_id: cart_id,
+    })
+    .then(({ products }) => products)
+    .catch((_) => [] as Product[]);
+
+  const items = products.map((p) => {
+    const variants = p.variants as CalculatedVariant[];
+
+    const cheapestVariant = variants.reduce((acc, curr) => {
+      if (acc.calculated_price > curr.calculated_price) {
+        return curr
+      }
+      return acc
+    })
+
+    return {
+      id: p.id,
+      title: p.title,
+      handle: p.handle,
+      thumbnail: p.thumbnail,
+      calculated_price: cheapestVariant.calculated_price,
+      product: p,
+      tags: p.tags,
+      price: {
+        calculated_price: formatAmount({
+          amount: cheapestVariant.calculated_price,
+          region: region,
+          includeTaxes: false,
+        }),
+        original_price: formatAmount({
+          amount: cheapestVariant.original_price,
+          region: region,
+          includeTaxes: false,
+        }),
+        difference: getPercentageDiff(
+          cheapestVariant.original_price,
+          cheapestVariant.calculated_price
+        ),
+        price_type: cheapestVariant.calculated_price_type,
+      },
+    }
+  })
+    .reduce((r, a) => {
+      r[a.tags[0]?.id] = r[a.tags[0]?.id] || [];
+      r[a.tags[0]?.id].push(a);
+      return r;
+    }, Object.create(null));
+
+  return Object.keys(items).map((key: string) => {
+    if (key === 'undefined') {
+      return items['undefined'];
+    } else {
+      return [
+        items[key]
+      ];
+    }
+  })
+    .flat()
+    .sort((a, b) => {
+      const aPrice = Array.isArray(a) ? a[0].calculated_price : a.calculated_price;
+      const bPrice = Array.isArray(b) ? b[0].calculated_price : b.calculated_price;
+      return aPrice - bPrice;
+    });
+}
+
+export const useGetDesignerOptions = (category: string) => {
+  const { cart } = useCart()
+
+  const queryResults = useQuery(
+    ["designer_products_category", category, cart?.id, cart?.region],
+    () => fetchProductsDesigner(category, cart?.id, cart?.region!),
+    {
+      enabled: !!cart?.id && !!category && !!cart?.region,
+      staleTime: Infinity,
+      refetchOnWindowFocus: false,
+    }
+  )
+
+  return queryResults
 }
 
 export const useFeaturedProductsQuery = () => {

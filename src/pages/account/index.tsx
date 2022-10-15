@@ -16,7 +16,7 @@ const Account: NextPageWithLayout = () => {
 
 Account.getLayout = (page: ReactElement) => {
   return (
-    <Layout>
+    <Layout dark={false}>
       <AccountLayout>{page}</AccountLayout>
     </Layout>
   )

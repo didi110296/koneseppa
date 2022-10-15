@@ -24,7 +24,7 @@ const NotFound: NextPageWithLayout = () => {
 }
 
 NotFound.getLayout = (page: ReactElement) => {
-  return <Layout>{page}</Layout>
+  return <Layout dark={false}>{page}</Layout>
 }
 
 export default NotFound

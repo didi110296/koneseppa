@@ -16,7 +16,7 @@ const Addresses: NextPageWithLayout = () => {
 
 Addresses.getLayout = (page: ReactElement) => {
   return (
-    <Layout>
+    <Layout dark={false}>
       <AccountLayout>{page}</AccountLayout>
     </Layout>
   )

@@ -1,6 +1,5 @@
 import { useMobileMenu } from "@lib/context/mobile-menu-context"
 import Hamburger from "@modules/common/components/hamburger"
-import CartDropdown from "@modules/layout/components/cart-dropdown"
 import DropdownMenu from "@modules/layout/components/dropdown-menu"
 import MobileMenu from "@modules/mobile-menu/templates"
 import DesktopSearchModal from "@modules/search/templates/desktop-search-modal"
@@ -9,7 +8,7 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 
-const Nav = () => {
+const Nav = ({ dark }: { dark: boolean }) => {
   const { pathname } = useRouter()
   const [isHome, setIsHome] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
@@ -34,7 +33,7 @@ const Nav = () => {
   }, [isHome])
 
   useEffect(() => {
-    pathname === "/" ? setIsHome(true) : setIsHome(false)
+    pathname === "/" ? setIsHome(true) : pathname === "/designer" ? setIsHome(true) : setIsHome(false)
   }, [pathname])
 
   const { toggle } = useMobileMenu()
@@ -47,17 +46,17 @@ const Nav = () => {
     >
       <header
         className={clsx(
-          "relative h-16 px-8 mx-auto transition-colors bg-transparent border-b border-transparent duration-200 group-hover:bg-white group-hover:border-gray-200",
+          `relative h-16 px-8 mx-auto transition-colors bg-transparent border-b border-transparent duration-200 group-hover:bg-${dark ? 'slate-800' : 'white'} ${dark ? '' : 'group-hover:border-gray-200'}`,
           {
-            "!bg-white !border-gray-200": !isHome || isScrolled,
+            [`!bg-${dark ? 'slate-800' : 'white'} ${dark ? '' : '!border-gray-200'}`]: !isHome || isScrolled,
           }
         )}
       >
         <nav
           className={clsx(
-            "text-gray-900 flex items-center justify-between w-full h-full text-small-regular transition-colors duration-200",
+            `text-${dark ? 'white' : 'gray-900'} flex items-center justify-between w-full h-full text-small-regular transition-colors duration-200`,
             {
-              "text-white group-hover:text-gray-900": isHome && !isScrolled,
+              [`text-white group-hover:text-${dark ? 'white' : 'gray-900'}`]: isHome && !isScrolled,
             }
           )}
         >
@@ -66,13 +65,13 @@ const Nav = () => {
               <Hamburger setOpen={toggle} />
             </div>
             <div className="hidden small:block h-full">
-              <DropdownMenu />
+              <DropdownMenu dark={dark} />
             </div>
           </div>
 
           <div className="flex items-center h-full">
             <Link href="/">
-              <a className="text-xl-semi uppercase">Acme</a>
+              <a className="text-xl-semi uppercase">koneseppa.fi</a>
             </Link>
           </div>
 
@@ -82,8 +81,10 @@ const Nav = () => {
               <Link href="/account">
                 <a>Account</a>
               </Link>
+              <Link href="/cart">
+                <a>Cart</a>
+              </Link>
             </div>
-            <CartDropdown />
           </div>
         </nav>
         <MobileMenu />

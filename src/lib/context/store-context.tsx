@@ -8,7 +8,6 @@ import {
   useUpdateLineItem,
 } from "medusa-react"
 import React, { useEffect, useState } from "react"
-import { useCartDropdown } from "./cart-dropdown-context"
 
 interface VariantInfoProps {
   variantId: string
@@ -24,6 +23,7 @@ interface StoreContext {
   countryCode: string | undefined
   setRegion: (regionId: string, countryCode: string) => void
   addItem: (item: VariantInfoProps) => void
+  addItemAsync: (item: VariantInfoProps & { id: string }) => Promise<void>;
   updateItem: (item: LineInfoProps) => void
   deleteItem: (lineId: string) => void
   resetCart: () => void
@@ -49,7 +49,6 @@ const CART_KEY = "medusa_cart_id"
 export const StoreProvider = ({ children }: StoreProps) => {
   const { cart, setCart, createCart, updateCart } = useCart()
   const [countryCode, setCountryCode] = useState<string | undefined>(undefined)
-  const { timedOpen } = useCartDropdown()
   const addLineItem = useCreateLineItem(cart?.id!)
   const removeLineItem = useDeleteLineItem(cart?.id!)
   const adjustLineItem = useUpdateLineItem(cart?.id!)
@@ -232,7 +231,6 @@ export const StoreProvider = ({ children }: StoreProps) => {
         onSuccess: ({ cart }) => {
           setCart(cart)
           storeCart(cart.id)
-          timedOpen()
         },
         onError: (error) => {
           handleError(error)
@@ -240,6 +238,33 @@ export const StoreProvider = ({ children }: StoreProps) => {
       }
     )
   }
+
+  const addItemAsync = ({ variantId, quantity, id }: {
+    variantId: string
+    quantity: number
+    id: string
+  }) => new Promise<void>((resolve, reject) => {
+    addLineItem.mutate(
+      {
+        variant_id: variantId,
+        quantity: quantity,
+        metadata: {
+          designer: id
+        }
+      },
+      {
+        onSuccess: ({ cart }) => {
+          setCart(cart)
+          storeCart(cart.id)
+          resolve();
+        },
+        onError: (error) => {
+          handleError(error)
+          reject(error);
+        },
+      }
+    )
+  })
 
   const deleteItem = (lineId: string) => {
     removeLineItem.mutate(
@@ -288,6 +313,7 @@ export const StoreProvider = ({ children }: StoreProps) => {
         countryCode,
         setRegion,
         addItem,
+        addItemAsync,
         deleteItem,
         updateItem,
         resetCart,

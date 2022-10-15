@@ -1,6 +1,7 @@
 import { medusaClient } from "@lib/config"
 import { IS_BROWSER } from "@lib/constants"
 import { getCollectionIds } from "@lib/util/get-collection-ids"
+import { ProductCollection } from "@medusajs/medusa"
 import CollectionTemplate from "@modules/collections/templates"
 import Head from "@modules/common/components/head"
 import Layout from "@modules/layout/templates"
@@ -17,10 +18,11 @@ interface Params extends ParsedUrlQuery {
 }
 
 const fetchCollection = async (id: string) => {
-  return await medusaClient.collections.retrieve(id).then(({ collection }) => ({
+  const collection = (await medusaClient.collections.list()).collections.find(i => i.handle === id) as ProductCollection;
+  return {
     id: collection.id,
     title: collection.title,
-  }))
+  };
 }
 
 export const fetchCollectionProducts = async ({
@@ -35,10 +37,9 @@ export const fetchCollectionProducts = async ({
   const { products, count, offset } = await medusaClient.products.list({
     limit: 12,
     offset: pageParam,
-    collection_id: [id],
+    handle: id,
     cart_id: cartId,
   })
-
   return {
     response: { products, count },
     nextPage: count > offset + 12 ? offset + 12 : null,
@@ -85,7 +86,7 @@ const CollectionPage: NextPageWithLayout<PrefetchedPageProps> = ({
 }
 
 CollectionPage.getLayout = (page: ReactElement) => {
-  return <Layout>{page}</Layout>
+  return <Layout dark={false}>{page}</Layout>
 }
 
 export const getStaticPaths: GetStaticPaths<Params> = async () => {

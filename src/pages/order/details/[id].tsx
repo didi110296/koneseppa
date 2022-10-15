@@ -57,7 +57,7 @@ const Confirmed: NextPageWithLayout = () => {
 }
 
 Confirmed.getLayout = (page: ReactElement) => {
-  return <Layout>{page}</Layout>
+  return <Layout dark={false}>{page}</Layout>
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
