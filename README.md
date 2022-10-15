@@ -16,7 +16,7 @@ Will actually be using this for my computer build shop. There might be some Finn
 
 ### Preview
 
-< PUT PREVIEW HERE >
+https://imgur.com/488fqnc
 
 ## Set up Project
 
