@@ -19,7 +19,7 @@ type ItemsTemplateProps = {
  *
  * @returns Map of the array grouped by the grouping function.
  */
-function groupBy<K, V>(list: Array<V>, keyGetter: (input: V) => K): Map<K, Array<V>> {
+export function groupBy<K, V>(list: Array<V>, keyGetter: (input: V) => K): Map<K, Array<V>> {
   const map = new Map<K, Array<V>>();
   list.forEach((item) => {
        const key = keyGetter(item);

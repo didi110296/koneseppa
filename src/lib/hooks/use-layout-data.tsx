@@ -57,6 +57,7 @@ const fetchFeaturedProducts = async (
       is_giftcard: false,
       limit: 4,
       cart_id: cartId,
+      collection_id: ['pcol_01GF629E787J6ZF4G0D97ADNG1', 'pcol_01GF629SB73ZD6GWZ6YR044QA2', 'pcol_01GFESZ0D2VCF2EC7G6T5B2Q8J']
     })
     .then(({ products }) => products)
     .catch((_) => [] as Product[])

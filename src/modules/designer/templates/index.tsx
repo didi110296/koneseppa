@@ -15,7 +15,6 @@ export type DesignerItem = (ProductPreviewType & {
 
 const DesignerTemplate: React.FC = ({ }) => {
   const info = useRef<HTMLDivElement>(null)
-  const inView = useIntersection(info, "0px")
 
   const [selected, setSelected] = useState<{
     case: DesignerItem | undefined,

@@ -114,3 +114,8 @@
     @apply text-[36px] leading-[48px] font-semibold;
   }
 }
+
+@media print {
+  nav {display:none;}
+  footer {display:none;}
+}
